@@ -1,16 +1,19 @@
 import click
 from .owl import Owl
 import subprocess
+from loguru import logger
 
 
 @click.group()
+@logger.catch
 def main():
     pass
 
 
 @main.command()
+@logger.catch
 def receive():
-    click.echo("dupadecho")
+    raise 'fsdafsf'
     with Owl() as o:
         input("dupa")
 
