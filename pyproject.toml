@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "easydrop"
+version = "0.0.1"
+description = "Tool that makes using AirDrop on Linux *easy*"
+license = "Apache-2.0"
+authors = ["TheLastGimbus <mateusz.soszynski@tuta.io>"]
+maintainers = ["TheLastGimbus <mateusz.soszynski@tuta.io>"]
+readme = "README.md"
+repository = "https://github.com/TheLastGimbus/easydrop"
+keywords = ["airdrop", "sharing", "nearby", "wifi", "awdl"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications :: File Sharing",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+opendrop = "^0.13.0"
+click = "^8.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[tools.poetry.scripts]
+easydrop = 'easydrop.__main__:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
