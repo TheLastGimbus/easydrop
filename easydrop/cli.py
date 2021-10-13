@@ -1,7 +1,7 @@
 import click
-from .owl import Owl
-import subprocess
 from loguru import logger
+
+from .owl import Owl
 
 
 @click.group()
@@ -13,9 +13,8 @@ def main():
 @main.command()
 @logger.catch
 def receive():
-    raise 'fsdafsf'
     with Owl() as o:
-        input("dupa")
+        input("Press enter to stop OWL...")
 
 
 if __name__ == '__main__':
