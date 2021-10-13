@@ -2,7 +2,7 @@ import sys
 
 import click
 from loguru import logger
-from opendrop import config as ad_config
+from opendrop import config as ad_config, server as ad_server
 
 from .owl import Owl
 
@@ -17,16 +17,20 @@ def main():
 
 
 @main.command()
-@click.option('--email')
+@click.option('--email', help="Your Email/AppleID")
+@click.option('--phone', help="Your phone number")
 @logger.catch
-def receive(email):
+def receive(email, phone):
     with Owl() as o:
         config = ad_config.AirDropConfig(
             airdrop_dir='~/.config/easydrop/opendrop',
-            email=email
+            email=email,
+            phone=phone,
         )
-        # srv = ad_server.AirDropServer(config)
-        input("Press enter to stop OWL...")
+        srv = ad_server.AirDropServer(config)
+        srv.start_service()
+        logger.info("Starting HTTPS server - press CTRL+C to stop...")
+        srv.start_server()
 
 
 if __name__ == '__main__':
