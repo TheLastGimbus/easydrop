@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Communications :: File Sharing",
 ]
+include = ["easydrop/bins/*"]
 
 [tool.poetry.dependencies]
 python = "^3.6"

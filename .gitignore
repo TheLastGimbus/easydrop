@@ -4,3 +4,4 @@
 easydrop/bins/
 
 __pycache__/
+dist/
