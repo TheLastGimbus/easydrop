@@ -63,9 +63,9 @@ class Owl:
         # self.owl_process.wait(10) - I guess we don't need that (hangs forever) ¯\_(ツ)_/¯
         logger.info('Restarting network...')
         # TODO: replace hard-coded interface name
-        self._run_sudo('ifconfig wlp1s0 down')
-        self._run_sudo('iwconfig wlp1s0 mode managed')
-        self._run_sudo('ifconfig wlp1s0 up')
+        self._run_sudo('ip link set wlp1s0 down')
+        self._run_sudo('iw wlp1s0 set type managed')
+        self._run_sudo('ip link set wlp1s0 up')
         for s in reversed(_services_to_stop):
             self._run_sudo(f'systemctl restart {s}')
         pass
