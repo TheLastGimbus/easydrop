@@ -1,0 +1,45 @@
+name: New release tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # TODO: Remove this
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    name: Build and release package
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.1.11
+      - name: Install OWL dependencies
+        run: apt install libpcap-dev libev-dev libnl-3-dev libnl-genl-3-dev libnl-route-3-dev
+      # TODO: Some way to include all dependencies
+      - name: Build OWL
+        run: |
+          mkdir owl/build
+          cd owl/build
+          cmake ..
+          make
+          cp daemon/owl ../../easydrop/bins/
+      - name: Build package
+        run: |
+          poetry install
+          poetry build
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-wheel
+          path: dist/easydrop*.whl
+      # TODO: Switch to normal
+      - run: poetry publish --dry-run
+      # TODO: Create release from tag message
