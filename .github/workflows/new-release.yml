@@ -22,7 +22,7 @@ jobs:
         with:
           poetry-version: 1.1.11
       - name: Install OWL dependencies
-        run: apt install libpcap-dev libev-dev libnl-3-dev libnl-genl-3-dev libnl-route-3-dev
+        run: sudo apt install libpcap-dev libev-dev libnl-3-dev libnl-genl-3-dev libnl-route-3-dev
       # TODO: Some way to include all dependencies
       - name: Build OWL
         run: |
