@@ -27,7 +27,6 @@ class Owl:
                     adpt = a
                     break
             if adpt is None:
-                logger.critical("I can't find WiFi interface myself... you will need to specify it with --interface")
                 raise InterfaceNotFoundError("Can't auto-find interface")
             else:
                 self.iface = adpt.name
@@ -62,10 +61,8 @@ class Owl:
         # Exit if OWL exits in N seconds instead of keeping up
         try:
             out, err = self.owl_process.communicate(timeout=2)
-            logger.critical('Could not start OWL!')
             logger.debug(f'[owl] {out.decode()}')
             logger.error(f'[owl] {err.decode()}')
-            logger.error('Quitting...')
             self.__exit__(None, None, None)
             raise OwlError("Could not start OWL")
         except subprocess.TimeoutExpired:
