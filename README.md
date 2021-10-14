@@ -55,3 +55,4 @@ You will also need to install `libpcap`, `libev` and `libnl`:
 ## TODO:
 - [ ] Sending files - may require more work to also [advertise BLE beacons to wake up receivers](https://github.com/seemoo-lab/opendrop/issues/30)
 - [ ] Windoza
+- [ ] Include all lib* dependencies within package
