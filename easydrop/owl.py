@@ -28,7 +28,7 @@ class Owl:
                     break
             if adpt is None:
                 logger.critical("I can't find WiFi interface myself... you will need to specify it with --interface")
-                raise "Can't find interface"
+                raise InterfaceNotFoundError("Can't auto-find interface")
             else:
                 self.iface = adpt.name
 
@@ -67,7 +67,7 @@ class Owl:
             logger.error(f'[owl] {err.decode()}')
             logger.error('Quitting...')
             self.__exit__(None, None, None)
-            exit(10)
+            raise OwlError("Could not start OWL")
         except subprocess.TimeoutExpired:
             pass
         logger.success("OWL running!")
@@ -85,3 +85,11 @@ class Owl:
         for s in reversed(_services_to_stop):
             self._run_sudo(f'systemctl restart {s}')
         pass
+
+
+class InterfaceNotFoundError(OSError):
+    pass
+
+
+class OwlError(IOError):
+    pass
