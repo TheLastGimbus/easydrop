@@ -1,5 +1,5 @@
+import pathlib
 import sys
-from time import sleep
 
 import click
 from loguru import logger
@@ -9,6 +9,9 @@ from .owl import Owl
 
 logger.remove()
 logger.add(sys.stdout, format='<green>{time:HH:mm:ss}</green> <level>{message}</level>', level='TRACE')
+
+# TODO: Some static config (like email and phone number)
+_conf_dir = pathlib.Path('~/.config/easydrop')
 
 
 @click.group()
@@ -24,7 +27,7 @@ def main():
 def receive(email, phone):
     with Owl() as o:
         config = ad_config.AirDropConfig(
-            airdrop_dir='~/.config/easydrop/opendrop',
+            airdrop_dir=(_conf_dir / 'opendrop'),
             email=email,
             phone=phone,
         )

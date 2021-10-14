@@ -1,6 +1,7 @@
 import subprocess
 from getpass import getpass
 
+import pkg_resources
 from loguru import logger
 
 # Order is important
@@ -14,6 +15,11 @@ _services_to_stop = [
 class Owl:
     def __inti__(self):
         pass
+
+    @staticmethod
+    def _get_binary_path():
+        # TODO: Different paths/bins for different systems?
+        return pkg_resources.resource_filename('easydrop', 'bins/owl')
 
     def _run_sudo(self, cmd):
         res = subprocess.run(f'sudo -S {cmd}'.split(), input=self.sudo_pwd, text=True, timeout=10, capture_output=True)
@@ -32,7 +38,7 @@ class Owl:
 
         logger.info('Starting OWL...')
         self.owl_process = subprocess.Popen(
-            'sudo -S owl -i wlp1s0 -v'.split(),
+            f'sudo -S {self._get_binary_path()} -i wlp1s0 -v'.split(),
             stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         # NOTE: .communicate() blocks the whole thing and waits to finish - we do *not* want that!
         self.owl_process.stdin.write(self.sudo_pwd.encode())
