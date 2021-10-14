@@ -21,11 +21,12 @@ def main():
 
 
 @main.command()
+@click.option('--interface', '-i', help="WiFi interface to use - if not specified, easydrop should guess it")
 @click.option('--email', help="Your Email/AppleID")
 @click.option('--phone', help="Your phone number")
 @logger.catch
-def receive(email, phone):
-    with Owl() as o:
+def receive(interface, email, phone):
+    with Owl(interface=interface) as o:
         config = ad_config.AirDropConfig(
             airdrop_dir=(_conf_dir / 'opendrop'),
             email=email,

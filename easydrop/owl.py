@@ -1,6 +1,8 @@
+import re
 import subprocess
 from getpass import getpass
 
+import ifaddr
 import pkg_resources
 from loguru import logger
 
@@ -13,8 +15,22 @@ _services_to_stop = [
 
 
 class Owl:
-    def __inti__(self):
-        pass
+    def __init__(self, interface=None):
+        self.iface = interface
+        if self.iface is None:
+            adpt = None
+            # I haven't found any good way to detect which interfaces are for wifi
+            # From what I've seen, most of them are named like "wlpNs0"
+            # If anyone has better idea - change is welcome
+            for a in ifaddr.get_adapters():
+                if re.match(r'wl\w*', a.name):
+                    adpt = a
+                    break
+            if adpt is None:
+                logger.critical("I can't find WiFi interface myself... you will need to specify it with --interface")
+                raise "Can't find interface"
+            else:
+                self.iface = adpt.name
 
     @staticmethod
     def _get_binary_path():
@@ -36,9 +52,9 @@ class Owl:
         for s in _services_to_stop:
             self._run_sudo(f'systemctl stop {s}')
 
-        logger.info('Starting OWL...')
+        logger.info(f'Starting OWL on {self.iface}...')
         self.owl_process = subprocess.Popen(
-            f'sudo -S {self._get_binary_path()} -i wlp1s0 -v'.split(),
+            f'sudo -S {self._get_binary_path()} -i {self.iface} -v'.split(),
             stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         # NOTE: .communicate() blocks the whole thing and waits to finish - we do *not* want that!
         self.owl_process.stdin.write(self.sudo_pwd.encode())
@@ -63,9 +79,9 @@ class Owl:
         # self.owl_process.wait(10) - I guess we don't need that (hangs forever) ¯\_(ツ)_/¯
         logger.info('Restarting network...')
         # TODO: replace hard-coded interface name
-        self._run_sudo('ip link set wlp1s0 down')
-        self._run_sudo('iw wlp1s0 set type managed')
-        self._run_sudo('ip link set wlp1s0 up')
+        self._run_sudo(f'ip link set {self.iface} down')
+        self._run_sudo(f'iw {self.iface} set type managed')
+        self._run_sudo(f'ip link set {self.iface} up')
         for s in reversed(_services_to_stop):
             self._run_sudo(f'systemctl restart {s}')
         pass
