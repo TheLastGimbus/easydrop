@@ -2,3 +2,5 @@
 .idea/
 
 easydrop/bins/
+
+__pycache__/
