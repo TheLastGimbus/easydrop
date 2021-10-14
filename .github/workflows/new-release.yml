@@ -41,5 +41,5 @@ jobs:
           name: python-wheel
           path: dist/easydrop*.whl
       # TODO: Switch to normal
-      - run: poetry publish --dry-run
+      - run: poetry publish -u __token__ -p ${{ secrets.PYPI_TOKEN }} --dry-run
       # TODO: Create release from tag message
