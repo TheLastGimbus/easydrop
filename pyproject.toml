@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "easydrop"
-version = "0.0.1"
+version = "0.0.1a1"
 description = "Tool that makes using AirDrop on Linux *easy*"
 license = "Apache-2.0"
 authors = ["TheLastGimbus <mateusz.soszynski@tuta.io>"]

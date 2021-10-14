@@ -36,6 +36,8 @@ def receive(email, phone):
         srv.start_service()
         logger.info("Starting HTTP server - press CTRL+C to stop...")
         srv.start_server()
+        # TODO: Print stuff when receiving file
+        # Currently, user is completely unaware that something came xD
 
 
 if __name__ == '__main__':
