@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 import click
 from loguru import logger
@@ -28,8 +29,9 @@ def receive(email, phone):
             phone=phone,
         )
         srv = ad_server.AirDropServer(config)
+        logger.debug("Starting mDNS...")
         srv.start_service()
-        logger.info("Starting HTTPS server - press CTRL+C to stop...")
+        logger.info("Starting HTTP server - press CTRL+C to stop...")
         srv.start_server()
 
 
